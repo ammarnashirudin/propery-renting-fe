@@ -67,10 +67,10 @@ export const HeroHeader = () => {
                 ) : (
                   <>
                     <Button asChild size="sm" variant="ghost">
-                      <Link href="/login/user">Login</Link>
+                      <Link href="/Login/user">Login</Link>
                     </Button>
                     <Button asChild size="sm">
-                      <Link href="/RegisterUser">Register</Link>
+                      <Link href="/Register/user">Register</Link>
                     </Button>
                   </>
                 )}
