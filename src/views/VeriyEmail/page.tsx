@@ -42,8 +42,8 @@ export default function VerifyEmailView() {
             alert("Email verified successfully. You can now login.");
             router.push(
                 res.data.role === "TENANT"
-                ? "/login/tenant"
-                : "/login/user"
+                ? "/Login/tenant"
+                : "/Login/user"
             );            
         } catch (e:any){
             alert(e.response?.data?.message || "An error occurred");
