@@ -20,7 +20,7 @@ export const HeroHeader = () => {
   }, [pathname])
 
   const menuItems = [
-    ...(isVerified ? [{ name: "Profile", href: "/profile" }] : []),
+    ...(isVerified ? [{ name: "Profile", href: "/Profile" }] : []),
     ...(isVerified && role === "TENANT"
       ? [{ name: "Dashboard", href: "/tenant/properties" }]
       : []),
@@ -99,7 +99,7 @@ export const HeroHeader = () => {
                         onClick={() => setMenuState(false)}
                         className="block text-muted-foreground hover:text-foreground"
                       >
-                        {item.name}
+                        {item.name} 
                       </Link>
                     </li>
                   ))}
