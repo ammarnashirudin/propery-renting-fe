@@ -46,7 +46,7 @@ export default function ForgotPasswordPageConfirm(){
                 newPassword: values.password,
             });
             alert("Password reset successful. Please login with your new password.");
-            router.push("/login/user");
+            router.push("/Login/user");
         } catch (error: any) {
             setMessage(error.response?.data?.message || "An error occurred");
         } finally {
