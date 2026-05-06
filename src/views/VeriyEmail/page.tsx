@@ -14,8 +14,10 @@ export default function VerifyEmailView() {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [loading, setLoading] = useState(false);
+    const [called, setCalled] = useState(false);
 
     const submit = async () =>{
+        if(called || loading) return;
         if(!token) {
             alert("Invalid token");
             return;
@@ -30,6 +32,7 @@ export default function VerifyEmailView() {
         }
 
         try {
+            setCalled(true);
             setLoading(true);
 
             const res = await authService.verifyEmail({
@@ -44,6 +47,7 @@ export default function VerifyEmailView() {
             );            
         } catch (e:any){
             alert(e.response?.data?.message || "An error occurred");
+            setCalled(false);
         } finally{
             setLoading(false);
         }
