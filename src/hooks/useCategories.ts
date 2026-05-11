@@ -6,7 +6,7 @@ export function useCategories() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/categories")
+    api.get("/category")
       .then((res) => setData(res.data.data))
       .finally(() => setLoading(false));
   }, []);
