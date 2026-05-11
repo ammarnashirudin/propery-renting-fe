@@ -15,7 +15,7 @@ export default function PropertyCreateForm({ onSuccess }: { onSuccess: () => voi
   const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState("");
-    const {data : categories} = useCategories();
+  const {data : categories} = useCategories();
 
   async function submit() {
     try {
@@ -45,7 +45,7 @@ export default function PropertyCreateForm({ onSuccess }: { onSuccess: () => voi
     fd.append("address", address.trim());
 
     images.forEach((file) => {
-      fd.append("image", file);
+      fd.append("images", file);
     });
 
     try {
