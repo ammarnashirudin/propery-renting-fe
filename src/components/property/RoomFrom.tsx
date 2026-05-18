@@ -86,7 +86,10 @@ export default function RoomForm({
         }
       />
 
-      <Button onClick={submit} disabled={loading} className="bg-blue-600 hover:bg-blue-700">
+      <Button 
+      onClick={submit} 
+      disabled={loading} 
+      className={loading ? "cursor-wait" : "cursor-pointer"}>
         {loading ? "Saving..." : "Save Room"}
       </Button>
     </div>

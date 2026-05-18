@@ -72,7 +72,10 @@ export default function AvailabilityForm({
         </select>
       </div>
 
-      <Button onClick={submit} disabled={loading} className="bg-blue-600 hover:bg-blue-700">
+      <Button 
+      onClick={submit} 
+      disabled={loading} 
+      className={loading ? "cursor-wait" : "cursor-pointer"}>
         {loading ? "Saving..." : "Apply Availability"}
       </Button>
     </div>

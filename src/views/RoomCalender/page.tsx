@@ -17,7 +17,7 @@ export default function RoomCalendarView({
 
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-14 space-y-10 mt-6">
+    <section className="mx-auto max-w-5xl px-4 py-5 space-y-10 ">
       
       <button
         onClick={() => router.back()}

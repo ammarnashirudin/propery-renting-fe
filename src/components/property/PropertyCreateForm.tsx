@@ -7,6 +7,7 @@ import { api } from "@/services/api";
 import { CreatePropertySchema } from "@/views/TenantProperties/property.schema";
 import { useCategories } from "@/hooks/useCategories";
 
+
 export default function PropertyCreateForm({ onSuccess }: { onSuccess: () => void }) {
   
   const [name, setName] = useState("");
@@ -107,7 +108,11 @@ export default function PropertyCreateForm({ onSuccess }: { onSuccess: () => voi
       onChange={(e)=>setAddress(e.target.value)}
       />
 
-      <Button onClick={submit} disabled={loading} className="bg-blue-600 hover:bg-blue-700">
+      <Button 
+      onClick={submit} 
+      disabled={loading} 
+      className={loading ? "cursor-wait" : "cursor-pointer"}
+      >
         {loading ? "Saving..." : "Save Property"}
       </Button>
     </div>
