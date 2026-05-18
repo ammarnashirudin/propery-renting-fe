@@ -13,6 +13,7 @@ export default function PeakRateForm({
   onSuccess:()=>void;
 }) {
   const { createPeak } = useRoomCalendar();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     startDate: "",
     endDate: "",
@@ -26,13 +27,20 @@ export default function PeakRateForm({
       return;
     }
 
-    await createPeak(roomId, {
-      ...form,
-      value: Number(form.value),
-    });
-    onSuccess();
+    try {
+      setLoading(true);
+      await createPeak(roomId, {
+        ...form,
+        value: Number(form.value),
+      });
+      onSuccess();
+    } catch(e:any){
+      alert(e.response?.data?.message || "Gagal menyimpan peak rate");
+    } finally {
+      setLoading(false);
+    }
 
-    alert("Peak rate added");
+
   }
 
   return (
@@ -77,8 +85,13 @@ export default function PeakRateForm({
         />
       </div>
 
-      <Button className="w-fit bg-blue-600 hover:bg-blue-700" onClick={submit} >
-        Save Peak Rate
+      <Button  
+      onClick={submit} 
+      disabled={loading}
+      className={loading ? "cursor-wait" : "cursor-pointer"}
+      >
+        {loading ? "Saving..." : "Save Peak Rate"}
+        
       </Button>
     </div>
   );
