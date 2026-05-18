@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export const metadata: Metadata = {
