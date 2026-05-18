@@ -38,7 +38,7 @@ export default function AppSidebar() {
       ? [
           {
             label: "Profile",
-            href: "/profile",
+            href: "/Profile",
             icon: <IconUserBolt className="h-5 w-5" />,
           },
         ]
