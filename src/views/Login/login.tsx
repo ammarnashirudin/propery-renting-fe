@@ -20,7 +20,7 @@ import { useSocialLogin } from "@/hooks/useSocialLogin";
 import { LoginBody } from "@/types/auth.type";
 import { Formik, Form } from "formik";
 import { GoogleLogin } from "@react-oauth/google";
-
+import { useSnackbar } from "notistack";
 
 type Props = {
     role: "USER" | "TENANT";
@@ -29,14 +29,20 @@ type Props = {
 export default function LoginPage({ role }: Props) {
     const {login} = useLogin(role);
     const {login: socialLogin} = useSocialLogin(role);
-
+    const { enqueueSnackbar } = useSnackbar();
     const initialValues : LoginBody = {
         email: "",
         password: "",
     };
 
     const handleSubmit = async (values: LoginBody) => {
+      try {
         await login(values.email, values.password);
+        enqueueSnackbar("Login successful", { variant: "success" });        
+      } catch (error) {
+        enqueueSnackbar("Login failed. Please check your credentials.", { variant: "error" });
+      }
+
     }
   return (
     <section className="min-h-screen flex items-center justify-center bg-[#F6F7FB] px-6">
