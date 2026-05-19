@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 
 import { ForgotPasswordRequestSchema } from "../schema";
 import { useForgotPassword } from "@/hooks/useForgotPassword";
+import {useSnackbar } from "notistack";
 
 type porps = {
     email: string;
@@ -17,12 +18,19 @@ type porps = {
 
 export default function ForgotPasswordPageRequest() {
     const {requestReset} = useForgotPassword();
-
+    const {enqueueSnackbar} = useSnackbar();
     const initialValues : porps = {email: ""};
+    
 
     const handleSubmit = async (values: porps) => {
-        await requestReset(values.email);
-        alert("If an account with that email exists, a password reset link has been sent.");
+        try {
+            await requestReset(values.email);
+            enqueueSnackbar("Password reset link sent. Please check your email.", { variant: "success" });    
+        } catch (error) {
+            enqueueSnackbar("Failed to send password reset link. Please try again.", { variant: "error" });
+        }
+        
+        
     };
     return (
         <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">

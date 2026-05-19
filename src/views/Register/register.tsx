@@ -13,6 +13,7 @@ import { useResendVerification } from "@/hooks/useSendVerification";
 import { RegisterUserSchema, RegisterTenantSchema } from "./schema";
 import SocialLogin from "@/components/auth/socialLogin";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { useSnackbar } from "notistack";
 
 type Props = {
   role: "USER" | "TENANT";
@@ -22,14 +23,19 @@ export default function RegisterPage({ role }: Props) {
   const { register, loading, error } = useRegister(role);
   const { resend, loading: resendLoading, message } =
     useResendVerification();
-
+  const { enqueueSnackbar } = useSnackbar();
   const initialValues =
     role === "TENANT"
       ? { email: "", companyName: "", phoneNumber: "" }
       : { email: "" };
 
   const handleSubmit = async (values: any) => {
-    await register(values);
+    try {
+      await register(values);
+      enqueueSnackbar("Registration successful. Please check your email for verification.", { variant: "success" });
+    } catch (error) {
+      enqueueSnackbar("Registration failed. Please try again.", { variant: "error" });
+    }
   };
 
     return (

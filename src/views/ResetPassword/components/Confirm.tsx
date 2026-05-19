@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 
 import { authService } from "@/services/auth.service";
 import { ForgotPasswordConfirmSchema } from "../schema";
-import { promises } from "dns";
+import { useSnackbar } from "notistack";
 
 type Props = {
     password: string;
@@ -22,7 +22,7 @@ export default function ForgotPasswordPageConfirm(){
     const params = useSearchParams();
     const router = useRouter();
     const token = params.get("token");
-
+    const { enqueueSnackbar } = useSnackbar();
     const [message, setMessage] = useState<string | null>(null);
 
     const initialValues : Props = {
@@ -45,7 +45,7 @@ export default function ForgotPasswordPageConfirm(){
                 token,
                 newPassword: values.password,
             });
-            alert("Password reset successful. Please login with your new password.");
+            enqueueSnackbar("Password reset successful. Please login with your new password.", { variant: "success" });
             router.push("/Login/user");
         } catch (error: any) {
             setMessage(error.response?.data?.message || "An error occurred");

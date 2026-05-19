@@ -5,11 +5,13 @@ import { useState } from "react";
 import { authService } from "@/services/auth.service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSnackbar } from "notistack";
 
 export default function VerifyEmailView() {
     const params = useSearchParams();
     const router = useRouter();
     const token = params.get("token");
+    const {enqueueSnackbar} = useSnackbar();
 
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
@@ -19,15 +21,15 @@ export default function VerifyEmailView() {
     const submit = async () =>{
         if(called || loading) return;
         if(!token) {
-            alert("Invalid token");
+            enqueueSnackbar("Invalid token", { variant: "error" });
             return;
         }
         if(password !== confirm) {
-            alert("Passwords do not match");
+            enqueueSnackbar("Passwords do not match", { variant: "error" });
             return;
         }
         if(password.length < 8) {
-            alert("Password must be at least 8 characters");
+            enqueueSnackbar("Password must be at least 8 characters", { variant: "error" });
             return;
         }
 
@@ -39,14 +41,14 @@ export default function VerifyEmailView() {
                 token,
                 password,
             });
-            alert("Email verified successfully. You can now login.");
+            enqueueSnackbar("Email verified successfully. You can now login.", { variant: "success" });
             router.push(
                 res.data.role === "TENANT"
                 ? "/Login/tenant"
                 : "/Login/user"
             );            
         } catch (e:any){
-            alert(e.response?.data?.message || "An error occurred");
+            enqueueSnackbar(e.response?.data?.message || "An error occurred", { variant: "error" });
             setCalled(false);
         } finally{
             setLoading(false);
