@@ -75,7 +75,7 @@ export default function AvailabilityCalendarTable({
     };
   }
 
-  // calendar grid (same as sebelumnya)
+
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const days = useMemo(() => {
@@ -96,7 +96,7 @@ export default function AvailabilityCalendarTable({
 
   return (
     <div className="rounded-3xl border bg-card shadow-sm p-6 space-y-4">
-      {/* header */}
+      
       <div className="flex justify-between items-center">
         <button onClick={() => setCurrentMonth(
           d => new Date(d.getFullYear(), d.getMonth() - 1, 1)
@@ -114,12 +114,12 @@ export default function AvailabilityCalendarTable({
         )}>→</button>
       </div>
 
-      {/* days */}
+
       <div className="grid grid-cols-7 text-sm text-muted-foreground">
         {["Mo","Tu","We","Th","Fr","Sa","Su"].map(d => <div key={d}>{d}</div>)}
       </div>
 
-      {/* calendar */}
+
       <div className="grid grid-cols-7 gap-2">
         {days.map((d) => {
           const key = d.toISOString().slice(0, 10);
