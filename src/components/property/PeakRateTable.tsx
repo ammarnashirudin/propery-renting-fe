@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useRoomCalendar } from "@/hooks/useRoomCalender";
+import { useSnackbar } from "notistack";
 
 export default function PeakRateTable({ 
   roomId,
@@ -15,6 +16,7 @@ export default function PeakRateTable({
 }) {
   const [peaks, setPeaks] = useState<any[]>([]);
   const { deletePeak } = useRoomCalendar();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     api
@@ -26,6 +28,7 @@ export default function PeakRateTable({
     if (!confirm("Hapus peak rate ini?")) return;
     await deletePeak(id);
     onSuccess();
+    enqueueSnackbar("Peak rate deleted successfully", { variant: "success" });
   }
 
   return (

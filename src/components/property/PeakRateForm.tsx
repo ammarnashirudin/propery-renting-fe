@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRoomCalendar } from "@/hooks/useRoomCalender";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSnackbar } from "notistack";
 
 export default function PeakRateForm({ 
   roomId,
@@ -20,10 +21,11 @@ export default function PeakRateForm({
     type: "PERCENT",
     value: "",
   });
+  const { enqueueSnackbar } = useSnackbar();
 
   async function submit() {
     if (!form.startDate || !form.endDate || !form.value) {
-      alert("Semua field wajib diisi");
+      enqueueSnackbar("Semua field wajib diisi", { variant: "error" });
       return;
     }
 
@@ -34,8 +36,9 @@ export default function PeakRateForm({
         value: Number(form.value),
       });
       onSuccess();
+      enqueueSnackbar("Peak rate saved successfully", { variant: "success" });
     } catch(e:any){
-      alert(e.response?.data?.message || "Gagal menyimpan peak rate");
+      enqueueSnackbar(e.response?.data?.message || "Gagal menyimpan peak rate", { variant: "error" });
     } finally {
       setLoading(false);
     }
