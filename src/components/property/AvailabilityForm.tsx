@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRoomCalendar } from "@/hooks/useRoomCalender";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSnackbar } from "notistack";
 
 export default function AvailabilityForm({ 
   roomId,
@@ -12,15 +13,15 @@ export default function AvailabilityForm({
   roomId: number;
   onSuccess:()=> void;
 }) {
-  const { setAvailability, loading } = useRoomCalendar();
-
+  const { setAvailability, loading } = useRoomCalendar(); 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [available, setAvailable] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
 
   async function submit() {
     if (!startDate || !endDate) {
-      alert("Start & End date wajib diisi");
+      enqueueSnackbar("Start & End date wajib diisi", { variant: "error" });
       return;
     }
 
@@ -28,7 +29,7 @@ export default function AvailabilityForm({
     const end = new Date(endDate);
 
     if (start > end) {
-      alert("Start date tidak boleh lebih besar dari end date");
+      enqueueSnackbar("Start date tidak boleh lebih besar dari end date", { variant: "error" });
       return;
     }
 
@@ -48,10 +49,8 @@ export default function AvailabilityForm({
         })
       )
     );
-
     onSuccess();
-
-    alert("Availability updated");
+    enqueueSnackbar("Availability updated", { variant: "success" });
   }
 
 

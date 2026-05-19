@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRooms } from "@/hooks/useRooms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSnackbar } from "notistack";
 
 export default function RoomForm({
   propertyId,
@@ -13,7 +14,7 @@ export default function RoomForm({
   onSuccess: () => void;
 }) {
   const { create, loading } = useRooms();
-
+  const { enqueueSnackbar } = useSnackbar();
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -23,9 +24,9 @@ export default function RoomForm({
 
   async function submit() {
     if(!propertyId || isNaN(propertyId))
-      alert("Property ID tidak valid")
+      enqueueSnackbar("Property ID tidak valid", { variant: "error" });
     if (!form.name || !form.basePrice) {
-      alert("Room name & price wajib diisi");
+      enqueueSnackbar("Room name & price wajib diisi", { variant: "error" });
       return;
     }
 
@@ -40,8 +41,8 @@ export default function RoomForm({
       basePrice: "",
       roomType: "STANDARD",
     });
-
     onSuccess();
+    enqueueSnackbar("Room created successfully", { variant: "success" });
   }
 
   return (

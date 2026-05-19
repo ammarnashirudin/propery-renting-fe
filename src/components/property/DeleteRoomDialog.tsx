@@ -1,13 +1,16 @@
 "use client";
 
 import { useRooms } from "@/hooks/useRooms";
+import { useSnackbar } from "notistack";
 
 export default function DeleteRoomDialog({ roomId }: { roomId: number }) {
   const { remove } = useRooms();
+  const { enqueueSnackbar } = useSnackbar();
 
   async function onDelete() {
     if (!confirm("Hapus room ini?")) return;
     await remove(roomId);
+    enqueueSnackbar("Room deleted successfully", { variant: "success" });
     location.reload();
   }
 

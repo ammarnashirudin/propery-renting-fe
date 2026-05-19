@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/services/api";
 import { CreatePropertySchema } from "@/views/TenantProperties/property.schema";
 import { useCategories } from "@/hooks/useCategories";
-
+import { useSnackbar } from "notistack";
 
 export default function PropertyCreateForm({ onSuccess }: { onSuccess: () => void }) {
-  
+  const { enqueueSnackbar } = useSnackbar(); 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -30,12 +30,12 @@ export default function PropertyCreateForm({ onSuccess }: { onSuccess: () => voi
         { abortEarly: false }
       );
     } catch (err: any) {
-    alert(err.errors[0]);
-    return;
+      enqueueSnackbar(err.errors[0], { variant: "error" });
+      return;
     }
 
     if (!images.length) {
-      alert("Minimal 1 image wajib diupload");
+      enqueueSnackbar("Please upload at least 1 image", { variant: "warning" });
       return;
     }
 
@@ -53,8 +53,9 @@ export default function PropertyCreateForm({ onSuccess }: { onSuccess: () => voi
       setLoading(true);
       await api.post("/tenant/properties", fd);
       onSuccess();
+      enqueueSnackbar("Property created successfully", { variant: "success" });
     } catch (e: any) {
-      alert(e.response?.data?.message || "Gagal menyimpan properti");
+      enqueueSnackbar(e.response?.data?.message || "Gagal menyimpan properti", { variant: "error" });
     } finally {
       setLoading(false);
     }
