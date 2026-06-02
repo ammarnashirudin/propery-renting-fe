@@ -1,17 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import HeroSection from "@/views/Home/hero-section";
 import PropertyPage from "@/views/Property/page";
-import { PropertyQuery } from "@/services/propertyCatalog.service";
-import FooterSection from "@/views/Home/footer";
+import FooterSection from "@/views/Navbar/footer";
 
 export default function HomePage() {
-  const [query, setQuery] = useState<PropertyQuery>({
-    page: 1,
-    sortBy: "name",
-    sortOrder: "asc",
-  });
 
   return (
     <>
@@ -19,7 +12,10 @@ export default function HomePage() {
       
       <PropertyPage/>
 
-      <FooterSection/>
+      <div className="mt-100">
+        <FooterSection/>
+      </div>
+      
     </>
   );
 }

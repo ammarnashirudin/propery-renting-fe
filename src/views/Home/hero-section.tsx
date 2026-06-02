@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
+import PropertyPage from "../PropertyPublicDetail/page";
 
 export default function HeroSection() {
 
@@ -39,6 +39,10 @@ export default function HeroSection() {
             </Button>
           </div>
         </div>
+        <div className="my-11">
+          <PropertyPage/>
+        </div>
+        
     </section>
     </main>
   );
