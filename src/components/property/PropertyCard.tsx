@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {Button} from "../ui/button";
 
 export default function PropertyCard({ property }: { property: any }) {
   return (
@@ -25,12 +26,14 @@ export default function PropertyCard({ property }: { property: any }) {
           </p>
         )}
 
-        <Link
-          href={`/Property/${property.id}`}
-          className="block text-center bg-blue-600 text-white py-2 rounded"
+        <Button
+          asChild
+          className="block text-center"
         >
-          View Detail
-        </Link>
+          <Link href={`/Property/${property.id}`}>
+            View Detail
+          </Link>
+        </Button>
       </div>
     </div>
   );

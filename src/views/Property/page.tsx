@@ -34,7 +34,10 @@ export default function PropertyPage() {
     className="p-6 space-y-6 max-w-5xl mx-auto"
     id = "property"
     >
-      <PropertyFilter query={query} onChange={(newQuery) => setQuery(newQuery)} />
+      <PropertyFilter 
+      query={query}
+      loading={loading}
+      onChange={(newQuery)=> setQuery(newQuery)} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {data.data.map((item: any) => (
