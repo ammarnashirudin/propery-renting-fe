@@ -30,12 +30,12 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-6 flex gap-3">
-            <Button asChild className="bg-blue-600 hover:bg-blue-700">
+            <Button asChild >
               <Link href="#property">Cari Penginapan</Link>
             </Button>
 
             <Button asChild variant="outline" className="border-white text-black hover:bg-white/10">
-              <Link href="/RegisterTenant">Daftar sebagai Tenant</Link>
+              <Link href="/Register/tenant">Daftar sebagai Tenant</Link>
             </Button>
           </div>
         </div>
