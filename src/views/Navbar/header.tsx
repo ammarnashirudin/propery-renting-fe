@@ -61,7 +61,7 @@ export const HeroHeader = () => {
 
               <div className="flex items-center gap-3">
                 {isVerified ? (
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={logout}>
+                  <Button size="sm" onClick={logout}>
                     Logout
                   </Button>
                 ) : (
@@ -108,7 +108,6 @@ export const HeroHeader = () => {
                 <div className="mt-6 flex flex-col gap-3">
                   {isVerified ? (
                     <Button
-                    className="bg-blue-600 hover:bg-blue-700"
                       onClick={() => {
                         logout()
                         setMenuState(false)
