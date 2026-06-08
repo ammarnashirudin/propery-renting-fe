@@ -6,13 +6,17 @@ import { Button } from "../ui/button";
 
 type Props = {
   query: any;
+  loading: boolean;
   onChange: (newQuery: any) => void;
 };
 
-export default function PropertyFilter({ query, onChange }: Props) {
+export default function PropertyFilter({ query, loading, onChange }: Props) {
   const [draft, setDraft] = useState<any>(query);
+  
 
   function applyFilter() {
+    console.log("Applying filter");
+    console.log(draft);
     onChange({
       ...draft,
       page: 1,
@@ -93,9 +97,11 @@ export default function PropertyFilter({ query, onChange }: Props) {
         <div className="shrink-0">
           <Button
             onClick={applyFilter}
-            className="rounded-full bg-blue-600 px-8 h-10"
+            disabled={loading}
+            className={loading ? "cursor-wait" : "cursor-pointer"}
+            
           >
-            Search
+            {loading ? "searching" : "search"}
           </Button>
         </div>
 
