@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "../ui/button";
-import {createReservation} from "@/services/reservation.service";
+import {createReservation} from "@/services/transaction.service";
 import {useSnackbar} from "notistack";
 
 interface Props {
