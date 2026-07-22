@@ -2,66 +2,55 @@
 
 import { useState } from "react";
 import { Button } from "../ui/button";
-import {createReservation} from "@/services/reservation.service";
+import { createReservation } from "@/services/transaction.service";
 import {useSnackbar} from "notistack";
 
 interface Props {
   roomId: number;
 }
 
-export default function ReservationForm({ 
-    roomId 
+export default function ReservationForm({
+  roomId,
 }: Props) {
-    const [checkIn, setCheckIn] = useState("");
-    const [checkOut, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
-    const { enqueueSnackbar } = useSnackbar();
+  async function handleSubmit() {
+    try {
+      await createReservation({
+        roomId,
+        checkIn,
+        checkOut,
+      });
 
-    const onSubmit = async () => {
-        try{
-            await createReservation({
-                roomId,
-                checkIn,
-                checkOut,
-            });
-            enqueueSnackbar("Reservation created successfully", { variant: "success" });
-
-        } catch (error) {
-            enqueueSnackbar("Failed to create reservation", { variant: "error" });
-        }
-
+      enqueueSnackbar("Reservation created successfully", { variant: "success" });
+    } catch (err) {
+      enqueueSnackbar("Failed to create reservation", { variant: "error" });
+      console.log(err);
     }
+  }
 
-    return (
-    <div className="space-y-4 border p-4 rounded-xl">
-      <div>
-        <label>Check In</label>
+  return (
+    <div className="space-y-4">
+      <input
+        type="date"
+        value={checkIn}
+        onChange={(e) =>
+          setCheckIn(e.target.value)
+        }
+      />
 
-        <input
-          type="date"
-          className="border rounded p-2 w-full"
-          value={checkIn}
-          onChange={(e) =>
-            setCheckIn(e.target.value)
-          }
-        />
-      </div>
+      <input
+        type="date"
+        value={checkOut}
+        onChange={(e) =>
+          setCheckOut(e.target.value)
+        }
+      />
 
-      <div>
-        <label>Check Out</label>
-
-        <input
-          type="date"
-          className="border rounded p-2 w-full"
-          value={checkOut}
-          onChange={(e) =>
-            setCheckOut(e.target.value)
-          }
-        />
-      </div>
-
-      <Button onClick={onSubmit}>
-        Pesan Sekarang
+      <Button onClick={handleSubmit}>
+        Reserve Room
       </Button>
     </div>
   );

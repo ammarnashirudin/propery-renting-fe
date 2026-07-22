@@ -1,60 +1,56 @@
 "use client";
 
 import { useState } from "react";
+import { uploadPaymentProof } from "@/services/transaction.service";
 import { Button } from "../ui/button";
-import {uploadPaymentProof} from "@/services/transaction.service";
-import {useSnackbar} from "notistack";
+import { useSnackbar } from "notistack";
 
-interface Props {
+export default function UploadPaymentProof({
+  orderId,
+}: {
   orderId: number;
+}) {
+  const [file, setFile] = useState<File>();
+  const { enqueueSnackbar } = useSnackbar();
+  
+  async function handleUpload() {
+    if (!file) return;
+
+    const allowed = [
+      "image/jpeg",
+      "image/png",
+    ];
+
+    if (!allowed.includes(file.type)) {
+      enqueueSnackbar("Only JPG and PNG are allowed", { variant: "warning" });
+      return;
+    }
+
+    if (file.size > 1024 * 1024) {
+      enqueueSnackbar("Max file size is 1MB", { variant: "warning" });
+      return;
+    }
+
+    await uploadPaymentProof(orderId, file);
+
+    enqueueSnackbar("Upload success", { variant: "success" });
+  }
+
+  return (
+    <div className="space-y-3">
+      <input
+        type="file"
+        accept=".jpg,.jpeg,.png"
+        onChange={(e) =>
+          setFile(
+            e.target.files?.[0]
+          )
+        }
+      />
+
+      <Button onClick={handleUpload}>
+        Upload Proof
+      </Button>
+    </div>
+  );
 }
-
-export default function UploudPaymentProof({
-    orderId 
-}: Props) {
-    const [file, setFile] = useState<File | null>(null);
-    const { enqueueSnackbar } = useSnackbar();
-    const handleUpload = async () => {
-        if(!file) return;
-
-        const allowed = [
-            "image/jpeg", 
-            "image/png",
-        ];
-
-        if(!allowed.includes(file.type)) {
-            enqueueSnackbar("Only JPEG and PNG files are allowed", { variant: "warning" });
-            return;
-        }
-
-        if(file.size > 5 * 1024 * 1024) {
-            enqueueSnackbar("File size must be less than 5MB", { variant: "warning" });
-            return;
-        }
-
-        try{
-            await uploadPaymentProof(orderId, file);
-            enqueueSnackbar("Payment proof uploaded successfully", { variant: "success" });
-        } catch (error) {
-            enqueueSnackbar("Failed to upload payment proof", { variant: "error" });
-        }
-    };
-    return (
-        <div className="space-y-3">
-        <input
-            type="file"
-            accept=".jpg,.jpeg,.png"
-            onChange={(e) =>
-            setFile(
-                e.target.files?.[0] || null
-            )
-            }
-        />
-
-        <Button onClick={handleUpload}>
-            Upload Bukti Bayar
-        </Button>
-        </div>
-        );
-}
-    

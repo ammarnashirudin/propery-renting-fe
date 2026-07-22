@@ -1,45 +1,57 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import {getOrders} from "@/services/transaction.service";
-import OrderCard from "../../components/transaction/OrderCard";
-import OrderSearchFilter from "../../components/transaction/OrderSeachFilter";
+import { getMyOrders } from "@/services/transaction.service";
 
-export default function OrderListView() {
-    const [orders, setOrders] = useState([]);
-    const [search, setSearch] = useState("");
-    const [date, setDate] = useState("");
+export default function TransactionView() {
+  const [orders, setOrders] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
-    const fetchOrders = async () => {
-        const result =
-            await getOrders({
-                search,
-                date,
-            });
-        setOrders(result.data);
-    };
+  useEffect(() => {
+    loadOrders();
+  }, []);
 
-    useEffect(() => {
-        fetchOrders();
-    }, [search, date]);
+  async function loadOrders() {
+    const res = await getMyOrders();
+
+    setOrders(res.data);
+  }
+
+  const filtered = orders.filter(
+    (o: any) =>
+      String(o.id).includes(keyword)
+  );
+
   return (
-    <div>
-      <OrderSearchFilter
-        search={search}
-        date={date}
-        onSearchChange={setSearch}
-        onDateChange={setDate}
+    <div className="space-y-4">
+      <input
+        placeholder="Search Order"
+        value={keyword}
+        onChange={(e) =>
+          setKeyword(
+            e.target.value
+          )
+        }
       />
 
-      <div className="grid gap-4">
-        {orders.map((order: any) => (
-          <OrderCard
-            key={order.id}
-            order={order}
-          />
-        ))}
-      </div>
+      {filtered.map((order: any) => (
+        <div
+          key={order.id}
+          className="border p-4 rounded"
+        >
+          <h3>
+            Order #{order.id}
+          </h3>
+
+          <p>{order.status}</p>
+
+          <p>
+            {order.checkIn} -
+            {order.checkOut}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
