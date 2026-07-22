@@ -1,39 +1,31 @@
-import {api} from "./api";
+import { api } from "./api";
 
-export const createReservation = async (payload : {
-    roomId : number;
-    checkIn : string;
-    checkOut : string;
-}) => {
-    const {data} = await api.post("/transactions/reservations", payload);
-    return data;   
-};
-
-export const getOrders = async (params?:{
-    page?: number;
-    search?: string;
-    date? : string;
-}) => {
-    const {data} = await api.get("/transactions/orders", {params});
-    return data;
+export async function createReservation(data: {
+  roomId: number;
+  checkIn: string;
+  checkOut: string;
+}) {
+  return api.post("/orders", data);
 }
 
-export const cancelOrder = async (orderId : number) => {
-    const {data} = await api.post(`/transactions/orders/${orderId}/cancel`);
-    return data;
-};
+export async function getMyOrders() {
+  return api.get("/orders/me");
+}
 
-export const uploadPaymentProof = async (orderId : number, file : File) => {
-    const formData = new FormData();
-    formData.append("paymentProof", file);
+export async function cancelOrder(id: number) {
+  return api.patch(`/orders/${id}/cancel`);
+}
 
-    const {data} = await api.post(
-        `/transactions/orders/${orderId}/payment-proof`, 
-        formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    });
-    return data;
+export async function uploadPaymentProof(
+  id: number,
+  file: File
+) {
+  const formData = new FormData();
 
-};
+  formData.append("file", file);
+
+  return api.post(
+    `/orders/${id}/upload-proof`,
+    formData
+  );
+}
