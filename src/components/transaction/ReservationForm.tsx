@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { createReservation } from "@/services/transaction.service";
+import { transactionService } from "@/services/transaction.service";
 import {useSnackbar} from "notistack";
 
 interface Props {
@@ -18,7 +18,7 @@ export default function ReservationForm({
 
   async function handleSubmit() {
     try {
-      await createReservation({
+      await transactionService.createReservation({
         roomId,
         checkIn,
         checkOut,
