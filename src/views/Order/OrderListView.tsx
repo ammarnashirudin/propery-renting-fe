@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { getMyOrders } from "@/services/transaction.service";
+import { transactionService } from "@/services/transaction.service";
 
 export default function TransactionView() {
   const [orders, setOrders] = useState([]);
@@ -13,7 +13,7 @@ export default function TransactionView() {
   }, []);
 
   async function loadOrders() {
-    const res = await getMyOrders();
+    const res = await transactionService.getMyOrders();
 
     setOrders(res.data);
   }

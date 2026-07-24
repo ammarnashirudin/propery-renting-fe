@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { uploadPaymentProof } from "@/services/transaction.service";
+import { transactionService } from "@/services/transaction.service";
 import { Button } from "../ui/button";
 import { useSnackbar } from "notistack";
 
@@ -31,7 +31,7 @@ export default function UploadPaymentProof({
       return;
     }
 
-    await uploadPaymentProof(orderId, file);
+    await transactionService.uploadPaymentProof(orderId, file);
 
     enqueueSnackbar("Upload success", { variant: "success" });
   }
