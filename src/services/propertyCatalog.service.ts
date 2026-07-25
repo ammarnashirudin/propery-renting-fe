@@ -13,13 +13,15 @@ export type PropertyQuery = {
     longitude? : number;
 };
 
-export async function getProperties(
-    params:PropertyQuery = {page:1, limit:10}) {
-    const res = await api.get("/properties", {params});
-    return res.data;
+export const propertyCatalogService = {
+    getProperties : (params:PropertyQuery = {page:1, limit:10}) => 
+        api.get("/properties", {params}),
+
+    getPropertyDetail : (id:number) => 
+        api.get(`/properties/${id}`),
+
+    getRoomById : (id:number) =>
+        api.get(`/rooms/${id}`),
 }
 
-export async function getPropertyDetail(id:number) {
-    const res = await api.get(`/properties/${id}`);
-    return res.data;
-}
+
