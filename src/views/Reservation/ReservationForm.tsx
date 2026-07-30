@@ -1,114 +1,235 @@
 "use client";
 
-import dayjs from "dayjs";
-import { Input } from "@/components/ui/input";
+import { Dispatch, SetStateAction } from "react";
+import { DateRange } from "react-day-picker";
+import { BedDouble, CalendarDays, Users, Minus, Plus } from "lucide-react";
 
-interface Props {
-  room: any;
+import { Room } from "@/interfaces/room.interface";
 
-  checkIn: string;
+import DateRangePicker from "@/components/reservation/date-range-picker";
 
-  checkOut: string;
+import { Button } from "@/components/ui/button";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+interface ReservationFormProps {
+  room: Room;
+
+  range: DateRange | undefined;
+
+  setRange: Dispatch<SetStateAction<DateRange | undefined>>;
 
   guest: number;
 
-  setCheckIn: (v: string) => void;
-
-  setCheckOut: (v: string) => void;
-
-  setGuest: (v: number) => void;
+  setGuest: Dispatch<SetStateAction<number>>;
 }
 
 export default function ReservationForm({
   room,
-  checkIn,
-  checkOut,
+  range,
+  setRange,
   guest,
-  setCheckIn,
-  setCheckOut,
   setGuest,
-}: Props) {
+}: ReservationFormProps) {
+  const disabledDates =
+    room.availabilities
+      ?.filter((item) => !item.isAvailable)
+      .map((item) => new Date(item.date)) ?? [];
+
+  const increaseGuest = () => {
+    if (guest >= room.capacity) return;
+
+    setGuest((prev) => prev + 1);
+  };
+
+  const decreaseGuest = () => {
+    if (guest <= 1) return;
+
+    setGuest((prev) => prev - 1);
+  };
+
   return (
-    <div className="md:col-span-2 border rounded-xl p-6">
+    <Card className="lg:col-span-2 shadow-sm">
 
-      <h1 className="text-2xl font-semibold mb-8">
+      <CardHeader>
 
-        Reservation
+        <CardTitle className="text-2xl">
 
-      </h1>
+          Reservation
 
-      <div className="space-y-5">
+        </CardTitle>
 
-        <div>
+      </CardHeader>
 
-          <label className="text-sm">
+      <CardContent className="space-y-8">
 
-            Room
+        {/* ROOM */}
 
-          </label>
+        <div className="rounded-xl border p-5">
 
-          <Input value={room.name} disabled />
+          <div className="flex gap-4">
+
+            <div className="h-16 w-16 rounded-lg bg-muted flex items-center justify-center">
+
+              <BedDouble className="w-8 h-8" />
+
+            </div>
+
+            <div className="flex-1">
+
+              <h3 className="font-semibold text-lg">
+
+                {room.name}
+
+              </h3>
+
+              <p className="text-sm text-muted-foreground mt-1">
+
+                {room.description}
+
+              </p>
+
+              <div className="mt-3 flex items-center gap-2 text-sm">
+
+                <Users className="h-4 w-4" />
+
+                Capacity {room.capacity} Guest
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
 
-        <div>
+        {/* DATE */}
 
-          <label className="text-sm">
+        <div className="space-y-3">
 
-            Check In
+          <div className="flex items-center gap-2">
 
-          </label>
+            <CalendarDays className="w-5 h-5" />
 
-          <Input
-            type="date"
-            min={dayjs().format("YYYY-MM-DD")}
-            value={checkIn}
-            onChange={(e) => setCheckIn(e.target.value)}
+            <span className="font-medium">
+
+              Stay Date
+
+            </span>
+
+          </div>
+
+          <DateRangePicker
+            value={range}
+            onChange={setRange}
+            disabledDates={disabledDates}
           />
 
         </div>
 
-        <div>
+        {/* GUEST */}
 
-          <label className="text-sm">
+        <div className="space-y-3">
 
-            Check Out
-
-          </label>
-
-          <Input
-            type="date"
-            min={
-              checkIn ||
-              dayjs().format("YYYY-MM-DD")
-            }
-            value={checkOut}
-            onChange={(e) => setCheckOut(e.target.value)}
-          />
-
-        </div>
-
-        <div>
-
-          <label className="text-sm">
+          <p className="font-medium">
 
             Guest
 
-          </label>
+          </p>
 
-          <Input
-            type="number"
-            min={1}
-            value={guest}
-            onChange={(e) =>
-              setGuest(Number(e.target.value))
-            }
-          />
+          <div className="flex items-center justify-between rounded-xl border p-4">
+
+            <div>
+
+              <p className="font-medium">
+
+                Number of Guest
+
+              </p>
+
+              <p className="text-sm text-muted-foreground">
+
+                Maximum {room.capacity} guest
+
+              </p>
+
+            </div>
+
+            <div className="flex items-center gap-3">
+
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={decreaseGuest}
+                disabled={guest <= 1}
+              >
+                <Minus className="w-4 h-4" />
+              </Button>
+
+              <span className="w-8 text-center font-semibold text-lg">
+
+                {guest}
+
+              </span>
+
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={increaseGuest}
+                disabled={guest >= room.capacity}
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+
+            </div>
+
+          </div>
 
         </div>
 
-      </div>
+        {/* INFO */}
 
-    </div>
+        <div className="rounded-xl bg-muted/30 border p-5">
+
+          <h3 className="font-semibold mb-3">
+
+            Reservation Information
+
+          </h3>
+
+          <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside">
+
+            <li>
+              Check-out must be after check-in.
+            </li>
+
+            <li>
+              Unavailable dates cannot be selected.
+            </li>
+
+            <li>
+              Peak season prices are calculated automatically.
+            </li>
+
+            <li>
+              Payment proof must be uploaded within 1 hour after reservation.
+            </li>
+
+            <li>
+              Reservation can be cancelled before payment.
+            </li>
+
+          </ul>
+
+        </div>
+
+      </CardContent>
+
+    </Card>
   );
 }

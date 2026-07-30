@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getPropertyDetail } from "@/services/propertyCatalog.service";
+import { propertyCatalogService } from "@/services/propertyCatalog.service";
 import RoomPriceList from "@/components/property/RoomPriceList";
 import PriceCalendar from "@/components/property/PriceCalender";
 
@@ -25,7 +25,7 @@ export default function PropertyDetail() {
   useEffect(() => {
     if (!id) return;
 
-    getPropertyDetail(Number(id)).then((res) =>{
+    propertyCatalogService.getPropertyDetail(Number(id)).then((res) =>{
       setData(res.data);
       router.refresh();
     });
