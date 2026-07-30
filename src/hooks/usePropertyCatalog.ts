@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProperties, PropertyQuery } from "@/services/propertyCatalog.service";
+import { propertyCatalogService, PropertyQuery } from "@/services/propertyCatalog.service";
 
 export function usePropertyCatalog(query: PropertyQuery) {
   const [data, setData] = useState<any>(null);
@@ -10,7 +10,7 @@ export function usePropertyCatalog(query: PropertyQuery) {
 
     setLoading(true);
 
-    getProperties(query)
+    propertyCatalogService.getProperties(query)
       .then((res) => {
         if (isMounted) setData(res);
       })
